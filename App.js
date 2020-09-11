@@ -1,21 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { Main } from "./src/screens"
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#131625',
+    accent: '#d1cff7',
+  },
+  dark: true,
+};
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>M.E.S.A.</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider>
+      <Main />
+    </PaperProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
