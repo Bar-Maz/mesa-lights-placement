@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, SafeAreaView, ScrollView} from 'react-native';
 import {Appbar} from 'react-native-paper';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Main() {
     const [lampWidth, setLampWidth] = React.useState(0);
@@ -19,6 +20,7 @@ export default function Main() {
           <ScrollView>
 
           </ScrollView>
+          <StatusBar style="light" />
       </SafeAreaView>
     )
 }
