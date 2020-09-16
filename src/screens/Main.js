@@ -1,21 +1,40 @@
 import React from 'react';
-import { StyleSheet, Text, SafeAreaView } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import {StyleSheet, Text, SafeAreaView, ScrollView} from 'react-native';
+import {Appbar} from 'react-native-paper';
 
-export default Main = () => (
-    <SafeAreaView>
-        <Appbar.Header>
-            <Appbar.Content title="Title" subtitle="Subtitle" />
-        </Appbar.Header>
-        <Text>M.E.S.A.</Text>
-    </SafeAreaView>
-)
+export default function Main() {
+    const [lampWidth, setLampWidth] = React.useState(0);
+    const [lampLength, setLampLength] = React.useState(0);
+    const [roomWidth, setRoomWidth] = React.useState(0);
+    const [roomLength, setRoomLength] = React.useState(0);
+    const [rows, setRows] = React.useState(0);
+    const [lampsPerRow, setLampsPerRow] = React.useState(0);
+    const [rowsParalellToLongerWall, setRowsParalellToLongerWall] = React.useState(true);
+    const [lampsInLine, setLampsInLine] = React.useState(false);
+    return (
+      <SafeAreaView style={styles.container}>
+          <Appbar.Header style={styles.header}>
+              <Appbar.Content title={<Text>M. E. S. A.</Text>} style={styles.title}/>
+          </Appbar.Header>
+          <ScrollView>
+
+          </ScrollView>
+      </SafeAreaView>
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
+    header: {
+        width: '100%',
+    },
+    title: {
+        alignItems: 'center',
+    }
 });
+

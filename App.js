@@ -14,8 +14,8 @@ const theme = {
 
 export default function App() {
   return (
-    <PaperProvider>
-      <Main />
+    <PaperProvider theme={theme}>
+      <Main/>
     </PaperProvider>
   );
 }
