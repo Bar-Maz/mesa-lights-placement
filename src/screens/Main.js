@@ -8,14 +8,43 @@ export default function Main(props) {
     const [lampLength, setLampLength] = React.useState('');
     const [roomWidth, setRoomWidth] = React.useState('');
     const [roomLength, setRoomLength] = React.useState('');
-    const [rows, setRows] = React.useState('');
-    const [lampsPerRow, setLampsPerRow] = React.useState('');
+    const [rows, setRows] = React.useState('1');
+    const [lampsPerRow, setLampsPerRow] = React.useState('1');
     const [rowsParalellToLongerWall, setRowsParalellToLongerWall] = React.useState('yes');
     const [lampsInLine, setLampsInLine] = React.useState('no');
     const [wallAxis, setWallAxis] = React.useState('1');
     const [axisAxis, setAxisAxis] = React.useState('1');
     const [wallLamp, setWallLamp] = React.useState('1');
     const [lampLamp, setLampLamp] = React.useState('1');
+    const [results, setResults] = React.useState({
+        "wallToAxis": 0,
+        "axisToAxis": 0,
+        "wallToLamp": 0,
+        "lampToLamp": 0,
+    });
+
+    const checkInputs = () => {
+        let warningText = '';
+        if (!lampLength.match(/^(0|[1-9]\d*)(\.\d+)?$/) || !lampWidth.match(/^(0|[1-9]\d*)(\.\d+)?$/)) {
+            warningText += "Nieprawidłowy wymiar lampy!\n"
+        }
+        if (!roomLength.match(/^(0|[1-9]\d*)(\.\d+)?$/) || !roomWidth.match(/^(0|[1-9]\d*)(\.\d+)?$/)) {
+            warningText += "Nieprawidłowy wymiar pomieszczenia!\n"
+        }
+        if (!rows.match(/^(0|[1-9]\d*)$/)) {
+            warningText += "Nieprawidłowa ilość rzędów!\n"
+        }
+        if (!lampsPerRow.match(/^(0|[1-9]\d*)$/)) {
+            warningText += "Nieprawidłowa ilość lamp w rzędzie!\n"
+        }
+        if (!wallAxis.match(/^(0|[1-9]\d*)(\.\d+)?$/) || !axisAxis.match(/^(0|[1-9]\d*)(\.\d+)?$/) ||
+          !wallLamp.match(/^(0|[1-9]\d*)(\.\d+)?$/) || !lampLamp.match(/^(0|[1-9]\d*)(\.\d+)?$/)) {
+            warningText += "Nieprawidłowe proporcje!\n"
+        }
+
+        return warningText;
+    }
+
     return (
       <SafeAreaView style={styles.container}>
           <Appbar.Header style={styles.header}>
