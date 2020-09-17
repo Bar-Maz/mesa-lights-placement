@@ -135,30 +135,53 @@ export default function Main(props) {
             rowLength = RW;
             rowPerpendicularLength = RL;
         }
+        let pararellLampSize = LIN ? LL : LW;
         let axisToAxisSum = 2 * WTA + (R - 1) * ATA;
         let axisChunk = rowPerpendicularLength / axisToAxisSum;
         let wallToAxisDistance = (WTA * axisChunk / 100).toFixed(3);
-        results += `Ściana - Oś rzędu: ${wallToAxisDistance}m\n`;
+        let widthSum = R * pararellLampSize;
+        results += `Ściana - Oś rzędu: `;
+        if (wallToAxisDistance < 0 || widthSum > rowPerpendicularLength) {
+            results += `Brak miejsca!\n`;
+        } else {
+            results += `${wallToAxisDistance}m\n`;
+        }
         if (R > 1) {
             let axisToAxisDistance = (ATA * axisChunk / 100).toFixed(3);
-            results += `Oś rzędu - Oś rzędu:  ${axisToAxisDistance}m\n`;
+            results += `Oś rzędu - Oś rzędu: `;
+            if (axisToAxisDistance < 0 || widthSum > rowPerpendicularLength) {
+                results += `Brak miejsca!\n`;
+            } else {
+                results += `${axisToAxisDistance}m\n`;
+            }
         }
-        let pararellLampSize = LIN ? LL : LW;
         let distanceToDivide = rowLength - pararellLampSize * LPR;
         let lampToLampSum = 2 * WTL + (LPR - 1) * LTL;
         let lampChunk = distanceToDivide / lampToLampSum;
         let wallToLampDistance = (WTL * lampChunk / 100).toFixed(3);
-        results += `Ściana - Lampa:  ${wallToLampDistance}m\n`;
-        if (LPR > 1) {
-            let lampToLampDistance = (LTL * lampChunk / 100).toFixed(3);
-            results += `Lampa - Lampa:  ${lampToLampDistance}m\n`;
+        results += `Ściana - Lampa: `;
+        if (wallToLampDistance > 0) {
+            results += `${wallToLampDistance}m\n`
+        } else {
+            results += `Brak miejsca!\n`;
         }
+        let lampToLampDistance = 0;
+        if (LPR > 1) {
+            lampToLampDistance = (LTL * lampChunk / 100).toFixed(3);
+            results += `Lampa - Lampa: `;
+            if (lampToLampDistance > 0) {
+                results += `${lampToLampDistance}m\n`;
+            } else {
+                results += `Brak miejsca!\n`;
+            }
+        }
+
         return results;
     }
-    
+
     const showDialog = () => setIsDialogVisible(true);
     const hideDialog = () => setIsDialogVisible(false);
-    
+
     return (
       <SafeAreaView style={styles.container}>
           <Appbar.Header style={styles.header}>
