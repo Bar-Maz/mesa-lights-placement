@@ -21,9 +21,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundImage":"./assets/icon.png",
-        "foregroundImage":"./assets/iconfront.png"
-      }
+        "backgroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/iconfront.png"
+      },
+      "package": "com.bmaziarka.mlp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
