@@ -221,7 +221,10 @@ export default function Main(props) {
               </ScrollView>
           </View>
           <View style={[styles.buttonContainer, isKeyboardVisible ? {display: 'none'} : null]}>
-              <Button icon="calculator" mode="contained" onPress={() => console.log('Pressed')}>
+              <Button style={styles.button} icon="broom" mode="contained" onPress={() => console.log('Pressed')}>
+                  Wyczyść
+              </Button>
+              <Button style={styles.button} icon="calculator" mode="contained" onPress={() => console.log('Pressed')}>
                   Oblicz
               </Button>
           </View>
@@ -266,9 +269,13 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1,
+        width: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         flexDirection: 'row',
+    },
+    button: {
+        width: '40%',
     },
     scroll: {
         width: '100%',
