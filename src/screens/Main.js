@@ -1,28 +1,59 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, Text, SafeAreaView, ScrollView, View, Keyboard} from 'react-native';
 import {Appbar, TextInput, RadioButton, Button} from 'react-native-paper';
 import {StatusBar} from 'expo-status-bar';
 
+const initialState = {
+    lampWidth: '',
+    lampLength: '',
+    roomWidth: '',
+    roomLength: '',
+    rows: '1',
+    lampsPerRow: '1',
+    rowsParalellToLongerWall: 'yes',
+    lampsInLine: 'no',
+    wallAxis: '1',
+    axisAxis: '1',
+    wallLamp: '1',
+    lampLamp: '1',
+}
+
+const {useState, useEffect} = React;
+
 export default function Main(props) {
-    const [lampWidth, setLampWidth] = React.useState('');
-    const [lampLength, setLampLength] = React.useState('');
-    const [roomWidth, setRoomWidth] = React.useState('');
-    const [roomLength, setRoomLength] = React.useState('');
-    const [rows, setRows] = React.useState('1');
-    const [lampsPerRow, setLampsPerRow] = React.useState('1');
-    const [rowsParalellToLongerWall, setRowsParalellToLongerWall] = React.useState('yes');
-    const [lampsInLine, setLampsInLine] = React.useState('no');
-    const [wallAxis, setWallAxis] = React.useState('1');
-    const [axisAxis, setAxisAxis] = React.useState('1');
-    const [wallLamp, setWallLamp] = React.useState('1');
-    const [lampLamp, setLampLamp] = React.useState('1');
-    const [isKeyboardVisible, setIsKeyboardVisible] = React.useState(false);
-    const [results, setResults] = React.useState({
-        "wallToAxis": 0,
-        "axisToAxis": 0,
-        "wallToLamp": 0,
-        "lampToLamp": 0,
-    });
+    const [{
+        lampWidth,
+        lampLength,
+        roomWidth,
+        roomLength,
+        rows,
+        lampsPerRow,
+        rowsParalellToLongerWall,
+        lampsInLine,
+        wallAxis,
+        axisAxis,
+        wallLamp,
+        lampLamp
+    }, setState] = useState(initialState)
+    const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [results, setResults] = useState('');
+    const clearState = () => {
+        setState({...initialState});
+    };
+
+    const onChangeDecimal = (name, value) => {
+        setState(prevState => ({...prevState, [name]: value.replace(',', '.')}));
+    };
+
+    const onChangeInteger = (name, value) => {
+        setState(prevState => ({...prevState, [name]: value.replace(/[^0-9]/g, '')}));
+    };
+
+    const onChangeString = (name, value) => {
+        setState(prevState => ({...prevState, [name]: value}));
+    };
+
     useEffect(() => {
         Keyboard.addListener("keyboardDidShow", keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", keyboardDidHide);
@@ -78,7 +109,7 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={lampWidth}
-                            onChangeText={val => setLampWidth(val.replace(',', '.'))}
+                            onChangeText={val => onChangeDecimal("lampWidth", val)}
                           />
                       </View>
                       <View style={styles.inputContainer}>
@@ -88,7 +119,7 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={lampLength}
-                            onChangeText={val => setLampLength(val.replace(',', '.'))}
+                            onChangeText={val => onChangeDecimal("lampLength", val)}
                           />
                       </View>
                   </View>
@@ -101,7 +132,7 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={roomWidth}
-                            onChangeText={val => setRoomWidth(val.replace(',', '.'))}
+                            onChangeText={val => onChangeDecimal("roomWidth", val)}
                           />
                       </View>
                       <View style={styles.inputContainer}>
@@ -111,7 +142,7 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={roomLength}
-                            onChangeText={val => setRoomLength(val.replace(',', '.'))}
+                            onChangeText={val => onChangeDecimal("roomLength", val)}
                           />
                       </View>
                   </View>
@@ -124,7 +155,7 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={rows}
-                            onChangeText={val => setRows(val.replace(/[^0-9]/g, ''))}
+                            onChangeText={val => onChangeInteger("rows", val)}
                           />
                       </View>
                       <View style={styles.inputContainer}>
@@ -135,13 +166,13 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={lampsPerRow}
-                            onChangeText={val => setLampsPerRow(val.replace(/[^0-9]/g, ''))}
+                            onChangeText={val => onChangeInteger("lampsPerRow", val)}
                           />
                       </View>
                   </View>
                   <Text style={styles.label}>Rzędy względem dłuższej ściany</Text>
                   <RadioButton.Group
-                    onValueChange={val => setRowsParalellToLongerWall(val)}
+                    onValueChange={val => onChangeString("rowsParalellToLongerWall", val)}
                     value={rowsParalellToLongerWall}>
                       <View style={styles.row}>
                           <View style={styles.radioContainer}>
@@ -156,7 +187,7 @@ export default function Main(props) {
                   </RadioButton.Group>
                   <Text style={styles.label}>Lampy w rzędzie</Text>
                   <RadioButton.Group
-                    onValueChange={val => setLampsInLine(val)}
+                    onValueChange={val => onChangeString("lampsInLine", val)}
                     value={lampsInLine}>
                       <View style={styles.row}>
                           <View style={styles.radioContainer}>
@@ -179,7 +210,7 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={wallAxis}
-                            onChangeText={val => setWallAxis(val.replace(',', '.'))}
+                            onChangeText={val => onChangeDecimal("wallAxis", val)}
                           />
                       </View>
                       <View style={styles.inputContainer}>
@@ -190,7 +221,7 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={axisAxis}
-                            onChangeText={val => setAxisAxis(val.replace(',', '.'))}
+                            onChangeText={val => onChangeDecimal("axisAxis", val)}
                           />
                       </View>
                   </View>
@@ -203,7 +234,7 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={wallLamp}
-                            onChangeText={val => setWallLamp(val.replace(',', '.'))}
+                            onChangeText={val => onChangeDecimal("wallLamp", val)}
                           />
                       </View>
                       <View style={styles.inputContainer}>
@@ -214,7 +245,7 @@ export default function Main(props) {
                             style={styles.input}
                             keyboardType="numeric"
                             value={lampLamp}
-                            onChangeText={val => setLampLamp(val.replace(',', '.'))}
+                            onChangeText={val => onChangeDecimal("lampLamp", val)}
                           />
                       </View>
                   </View>
