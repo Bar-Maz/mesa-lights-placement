@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, SafeAreaView, ScrollView, View, Keyboard} from 'react-native';
-import {Appbar, TextInput, RadioButton, Button} from 'react-native-paper';
+import {Appbar, TextInput, RadioButton, Button, Dialog, Portal, Paragraph} from 'react-native-paper';
 import {StatusBar} from 'expo-status-bar';
 
 const initialState = {
@@ -36,7 +36,7 @@ export default function Main(props) {
         lampLamp
     }, setState] = useState(initialState)
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isDialogVisible, setIsDialogVisible] = useState(false);
     const [results, setResults] = useState('');
     const clearState = () => {
         setState({...initialState});
@@ -95,14 +95,13 @@ export default function Main(props) {
 
     const submit = () => {
         setResults('');
-        let modalText = checkInputs();
-        if (modalText) {
-            setResults(modalText);
+        let dialogText = checkInputs();
+        if (dialogText) {
+            setResults(dialogText);
         } else {
             setResults(computeResults());
         }
-        setIsModalVisible(true);
-        console.log(results);
+        showDialog();
     }
 
     const computeResults = () => {
@@ -156,12 +155,26 @@ export default function Main(props) {
         }
         return results;
     }
-
+    
+    const showDialog = () => setIsDialogVisible(true);
+    const hideDialog = () => setIsDialogVisible(false);
+    
     return (
       <SafeAreaView style={styles.container}>
           <Appbar.Header style={styles.header}>
               <Appbar.Content title={<Text>M. E. S. A.</Text>} style={styles.title}/>
           </Appbar.Header>
+          <Portal>
+              <Dialog visible={isDialogVisible} onDismiss={hideDialog}>
+                  <Dialog.Title>Wynik:</Dialog.Title>
+                  <Dialog.Content>
+                      <Paragraph>{results}</Paragraph>
+                  </Dialog.Content>
+                  <Dialog.Actions>
+                      <Button onPress={hideDialog}>OK</Button>
+                  </Dialog.Actions>
+              </Dialog>
+          </Portal>
           <View style={styles.scrollContainer}>
               <ScrollView style={styles.scroll}>
                   <Text style={styles.label}>Wymiary lampy (cm)</Text>
