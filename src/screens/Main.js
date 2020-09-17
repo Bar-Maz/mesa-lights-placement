@@ -316,10 +316,11 @@ export default function Main(props) {
               </ScrollView>
           </View>
           <View style={[styles.buttonContainer, isKeyboardVisible ? {display: 'none'} : null]}>
-              <Button style={styles.button} icon="broom" mode="contained" onPress={() => console.log('Pressed')}>
+              <Button style={styles.button} icon="broom" mode="contained" onPress={clearState}>
                   Wyczyść
               </Button>
-              <Button style={styles.button} icon="calculator" mode="contained" onPress={() => console.log('Pressed')}>
+              <Button style={styles.button} icon="calculator" mode="contained"
+                      onPress={submit}>
                   Oblicz
               </Button>
           </View>
