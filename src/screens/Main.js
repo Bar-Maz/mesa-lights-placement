@@ -93,6 +93,70 @@ export default function Main(props) {
         return warningText;
     }
 
+    const submit = () => {
+        setResults('');
+        let modalText = checkInputs();
+        if (modalText) {
+            setResults(modalText);
+        } else {
+            setResults(computeResults());
+        }
+        setIsModalVisible(true);
+        console.log(results);
+    }
+
+    const computeResults = () => {
+        let results = '';
+        let LW = parseFloat(lampWidth);
+        let LL = parseFloat(lampLength);
+        let RW = parseFloat(roomWidth) * 100;
+        let RL = parseFloat(roomLength) * 100;
+        let R = parseInt(rows);
+        let LPR = parseInt(lampsPerRow);
+        let LPTLW = rowsParalellToLongerWall === 'yes';
+        let LIN = lampsInLine === 'yes';
+        let WTA = parseFloat(wallAxis);
+        let ATA = parseFloat(axisAxis);
+        let WTL = parseFloat(wallLamp);
+        let LTL = parseFloat(lampLamp);
+        if (!(LW && LL && RW && RL && R && LPR && WTA && ATA && WTL && LTL)) {
+            return ("Żaden z parametrów nie może wynosić 0!")
+        }
+        if (LW > LL) {
+            [LW, LL] = [LL, LW];
+        }
+        if (RW > RL) {
+            [RW, RL] = [RL, RW];
+        }
+        let rowLength, rowPerpendicularLength;
+        if (LPTLW) {
+            rowLength = RL;
+            rowPerpendicularLength = RW;
+        } else {
+            rowLength = RW;
+            rowPerpendicularLength = RL;
+        }
+        let axisToAxisSum = 2 * WTA + (R - 1) * ATA;
+        let axisChunk = rowPerpendicularLength / axisToAxisSum;
+        let wallToAxisDistance = (WTA * axisChunk / 100).toFixed(3);
+        results += `Ściana - Oś rzędu: ${wallToAxisDistance}m\n`;
+        if (R > 1) {
+            let axisToAxisDistance = (ATA * axisChunk / 100).toFixed(3);
+            results += `Oś rzędu - Oś rzędu:  ${axisToAxisDistance}m\n`;
+        }
+        let pararellLampSize = LIN ? LL : LW;
+        let distanceToDivide = rowLength - pararellLampSize * LPR;
+        let lampToLampSum = 2 * WTL + (LPR - 1) * LTL;
+        let lampChunk = distanceToDivide / lampToLampSum;
+        let wallToLampDistance = (WTL * lampChunk / 100).toFixed(3);
+        results += `Ściana - Lampa:  ${wallToLampDistance}m\n`;
+        if (LPR > 1) {
+            let lampToLampDistance = (LTL * lampChunk / 100).toFixed(3);
+            results += `Lampa - Lampa:  ${lampToLampDistance}m\n`;
+        }
+        return results;
+    }
+
     return (
       <SafeAreaView style={styles.container}>
           <Appbar.Header style={styles.header}>
