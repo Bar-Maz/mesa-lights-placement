@@ -2,7 +2,7 @@
   "expo": {
     "name": "M.E.S.A.",
     "slug": "mlp",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -24,7 +24,8 @@
         "backgroundImage": "./assets/icon.png",
         "foregroundImage": "./assets/iconfront.png"
       },
-      "package": "com.bmaziarka.mlp"
+      "package": "com.bmaziarka.mlp",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
