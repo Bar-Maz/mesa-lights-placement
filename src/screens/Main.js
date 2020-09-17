@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, Text, SafeAreaView, ScrollView, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, Text, SafeAreaView, ScrollView, View, Keyboard} from 'react-native';
 import {Appbar, TextInput, RadioButton, Button} from 'react-native-paper';
 import {StatusBar} from 'expo-status-bar';
 
@@ -16,12 +16,29 @@ export default function Main(props) {
     const [axisAxis, setAxisAxis] = React.useState('1');
     const [wallLamp, setWallLamp] = React.useState('1');
     const [lampLamp, setLampLamp] = React.useState('1');
+    const [isKeyboardVisible, setIsKeyboardVisible] = React.useState(false);
     const [results, setResults] = React.useState({
         "wallToAxis": 0,
         "axisToAxis": 0,
         "wallToLamp": 0,
         "lampToLamp": 0,
     });
+    useEffect(() => {
+        Keyboard.addListener("keyboardDidShow", keyboardDidShow);
+        Keyboard.addListener("keyboardDidHide", keyboardDidHide);
+        return () => {
+            Keyboard.removeListener("keyboardDidShow", keyboardDidShow);
+            Keyboard.removeListener("keyboardDidHide", keyboardDidHide);
+        };
+    }, []);
+
+    const keyboardDidShow = () => {
+        setIsKeyboardVisible(true)
+    };
+
+    const keyboardDidHide = () => {
+        setIsKeyboardVisible(false)
+    };
 
     const checkInputs = () => {
         let warningText = '';
@@ -203,7 +220,7 @@ export default function Main(props) {
                   </View>
               </ScrollView>
           </View>
-          <View style={styles.buttonContainer}>
+          <View style={[styles.buttonContainer, isKeyboardVisible ? {display: 'none'} : null]}>
               <Button icon="calculator" mode="contained" onPress={() => console.log('Pressed')}>
                   Oblicz
               </Button>
@@ -251,6 +268,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'row',
     },
     scroll: {
         width: '100%',
